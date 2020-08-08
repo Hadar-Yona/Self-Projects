@@ -8,12 +8,12 @@ namespace Ex03.ConsoleUI
 {
     public class GarageUI
     {
+        const string SORT = "s";
         public static Garage m_OurGarage = new Garage();
 
         public static void StartManage()
         {
             Array typesOfVehicles = Enum.GetValues(typeof(eVehicleType));
-            m_OurGarage.AddOperations();
             MainMenu();
         }
 
@@ -21,60 +21,63 @@ namespace Ex03.ConsoleUI
         {
             printGarageWelcome();
             displayGarageOperations();
-            int operationChoiceNumber = getUserChoice(m_OurGarage.GarageOperations.Count);
-            while (operationChoiceNumber > 0 && operationChoiceNumber <= m_OurGarage.GarageOperations.Count)
+            int operationChoiceNumber = getUserChoice(Enum.GetValues(typeof(eMainMenuOperations)).Length);
+            while (operationChoiceNumber > 0 && operationChoiceNumber <= Enum.GetValues(typeof(eMainMenuOperations)).Length)
             {
                 Console.Clear();
                 printGarageWelcome();
-                    if (operationChoiceNumber == 1)
-                    {
+                switch (operationChoiceNumber)
+                {
+                    case ((int)eMainMenuOperations.InsertNewVehicleIntoTheGarage + 1):
                         insertVehicleProcess();
-                    }
-                    else if (operationChoiceNumber == 2)
-                    {
+                        break;
+
+                    case ((int)eMainMenuOperations.DisplaylistOftheLicenseNumbers + 1):
                         checkGarageVehicles();
                         printListByLicenseNumber();
-                    }
-                    else if (operationChoiceNumber == 3)
-                    {
+                        break;
+
+                    case ((int)eMainMenuOperations.DisplaVehiclesDetails + 1):
                         checkGarageVehicles();
                         printVehicleDetails();
-                    }
-                    else if (operationChoiceNumber == 4)
-                    {
+                        break;
+
+                    case ((int)eMainMenuOperations.DoAnotherOperationOnExistingVehicle + 1):
                         checkGarageVehicles();
                         addOperations();
-                    }
-                    else if (operationChoiceNumber == 5)
-                    {
+                        break;
+
+                    case ((int)eMainMenuOperations.ChangeVehicleStatus + 1):
                         checkGarageVehicles();
                         changeStatusProcess();
-                    }
-                    else
-                    {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("\n\nIllegal value, please type again");
-                    Console.ForegroundColor = ConsoleColor.White;
-                    operationChoiceNumber = getUserChoice(m_OurGarage.GarageOperations.Count);
-                    }
+                    break;
+
+                    default:
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        System.Console.WriteLine(Environment.NewLine + "Illegal value, please type again");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        operationChoiceNumber = getUserChoice(Enum.GetValues(typeof(eMainMenuOperations)).Length);
+                    break;
+                }
             }
         }
 
         private static void printGarageWelcome()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
-            System.Console.WriteLine("\n============================= Hello! Welcome to Tal and Hadar's Garage =============================\n");
+            System.Console.WriteLine(Environment.NewLine + "============================= Hello! Welcome to Tal and Hadar's Garage =============================" + Environment.NewLine);
             Console.ForegroundColor = ConsoleColor.White;
         }
 
         private static void displayMainMenu()
         {
-            System.Console.WriteLine("\n\n\nIf you want to go back to the main menu, please press 0");
+            System.Console.WriteLine(Environment.NewLine + Environment.NewLine +
+                "If you want to go back to the main menu, please press 0");
             string choice = System.Console.ReadLine();
             while (choice != "0")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("\n\nIllegal value, please type again");
+                System.Console.WriteLine(Environment.NewLine + Environment.NewLine + "Illegal value, please type again");
                 Console.ForegroundColor = ConsoleColor.White;
                 choice = System.Console.ReadLine();
             }
@@ -84,6 +87,33 @@ namespace Ex03.ConsoleUI
                 Console.Clear();
                 MainMenu();
             }
+        }
+
+        private static string getStringForMainMenuOperations(int i_ChoiceNumber)
+        {
+                string operation = string.Empty;
+                if ((int)eMainMenuOperations.InsertNewVehicleIntoTheGarage == i_ChoiceNumber - 1)
+                {
+                    operation = "Insert a new vehicle into the garage";
+                }
+                else if ((int)eMainMenuOperations.DisplaylistOftheLicenseNumbers == i_ChoiceNumber - 1)
+                {
+                    operation = "Display list of the license numbers currently in the garage";
+                }
+                else if((int)eMainMenuOperations.DisplaVehiclesDetails == i_ChoiceNumber - 1)
+                {
+                    operation = "Display vehicle's details";
+                }
+                else if((int)eMainMenuOperations.DoAnotherOperationOnExistingVehicle == i_ChoiceNumber - 1)
+                {
+                    operation = "Do another operation on existing vehicle";
+                }
+                else
+                {
+                    operation = "Change vehicle status";
+                }
+
+                return operation;
         }
 
         private static void insertVehicleProcess()
@@ -100,14 +130,15 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nList of vehicles in the garage:\n");
+            System.Console.WriteLine(Environment.NewLine + "List of vehicles in the garage:\n");
             foreach (KeyValuePair<Customer, eStatus> item in m_OurGarage.GarageCustomers)
             {
                 Console.WriteLine("License Number: {0}, Status: {1}", item.Key.Vehicle.LicenseNumber, item.Value);
             }
 
-            System.Console.WriteLine("\n\n\nIf you want to sort the list, press s, otherwise press any key to go back to the main menu");
-            if (System.Console.ReadLine() == "s")
+            System.Console.WriteLine(Environment.NewLine + Environment.NewLine + 
+                "If you want to sort the list, press s, otherwise press any key to go back to the main menu");
+            if (System.Console.ReadLine() == SORT)
             {
                 printSortedListByLicenseNumber();
             }
@@ -124,7 +155,7 @@ namespace Ex03.ConsoleUI
             sortedList = m_OurGarage.GarageCustomers;
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nList of vehicles in the garage according to their status:\n");
+            System.Console.WriteLine(Environment.NewLine + "List of vehicles in the garage according to their status:" + Environment.NewLine);
             foreach (KeyValuePair<Customer, eStatus> item in sortedList.OrderBy(key => key.Value))
             {
                 System.Console.WriteLine("License Number: {0}, Status: {1}", item.Key.Vehicle.LicenseNumber, item.Value);
@@ -137,7 +168,7 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nPlease type a license number");
+            System.Console.WriteLine(Environment.NewLine + "Please type a license number");
             string licenseNum = System.Console.ReadLine();
             try
             {
@@ -148,7 +179,7 @@ namespace Ex03.ConsoleUI
                 System.Console.WriteLine(currVehicle.ToString());
                 System.Console.WriteLine(currVehicle.WheelsSet.ToList()[0].ToString());
                 System.Console.WriteLine(currCustomer.ToString());
-                System.Console.WriteLine("\nStatus In The Garage: " + m_OurGarage.GetStatus(licenseNum));
+                System.Console.WriteLine(Environment.NewLine + "Status In The Garage: " + m_OurGarage.GetStatus(licenseNum));
             }
             catch (VehicleNotFoundException e)
             {
@@ -162,21 +193,21 @@ namespace Ex03.ConsoleUI
 
         private static void changeStatusProcess()
         {
-            System.Console.WriteLine("\nPlease type your vehicle's license number");
+            System.Console.WriteLine(Environment.NewLine + "Please type your vehicle's license number");
             string licenseNumber = System.Console.ReadLine();
             if (!m_OurGarage.IsInGarage(licenseNumber))
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("\nThis vehicle is not in the garage right now");
+                System.Console.WriteLine(Environment.NewLine + "This vehicle is not in the garage right now");
                 Console.ForegroundColor = ConsoleColor.White;
                 displayMainMenu();
             }
 
             int index = 1;
-            System.Console.WriteLine("\nPlease type the new vehicle's status\n");
+            System.Console.WriteLine(Environment.NewLine + "Please type the new vehicle's status\n");
             foreach (eStatus status in Enum.GetValues(typeof(eStatus)))
             {
-                System.Console.WriteLine(index + ". " + status + "\n");
+                System.Console.WriteLine(index + ". " + status + Environment.NewLine);
                 index++;
             }
 
@@ -209,7 +240,7 @@ namespace Ex03.ConsoleUI
                 if (!flag)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("\n\nIllegal Choise, please try again\n");
+                    System.Console.WriteLine(Environment.NewLine + Environment.NewLine + "Illegal Choise, please try again\n");
                     Console.ForegroundColor = ConsoleColor.White;
                 }
             }
@@ -222,7 +253,7 @@ namespace Ex03.ConsoleUI
             if (m_OurGarage.GarageCustomers.Count < 1)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("\nThere are no vehicles in the garage right now");
+                Console.WriteLine(Environment.NewLine + "There are no vehicles in the garage right now");
                 Console.ForegroundColor = ConsoleColor.White;
                 displayMainMenu();
             }
@@ -230,7 +261,7 @@ namespace Ex03.ConsoleUI
 
         private static void addOperations()
         {
-            System.Console.WriteLine("\nPlease type your vehicle's license number");
+            System.Console.WriteLine(Environment.NewLine + "Please type your vehicle's license number");
             string licenseNumber = System.Console.ReadLine();
             if ((m_OurGarage.GarageCustomers.Count < 1) || !m_OurGarage.IsInGarage(licenseNumber))
             {
@@ -249,10 +280,10 @@ namespace Ex03.ConsoleUI
         {
             int index = 1;
 
-            System.Console.WriteLine("\nWhat would you like to do?\n");
-            foreach (string operation in m_OurGarage.GarageOperations)
+            System.Console.WriteLine(Environment.NewLine + "What would you like to do?" + Environment.NewLine);
+            foreach (eMainMenuOperations op in Enum.GetValues(typeof(eMainMenuOperations)))
             {
-                System.Console.WriteLine(index + ". " + operation + "\n");
+                System.Console.WriteLine(index + ". " + getStringForMainMenuOperations(index) + Environment.NewLine);
                 index++;
             }
         }
@@ -260,31 +291,12 @@ namespace Ex03.ConsoleUI
         private static void displayVehicles()
         {
             int index = 1;
-            System.Console.WriteLine("\nPlease choose the type of your vehicle\n");
+            System.Console.WriteLine(Environment.NewLine + "Please choose the type of your vehicle" + Environment.NewLine);
             foreach (eVehicleType type in Enum.GetValues(typeof(eVehicleType)))
             {
-                System.Console.WriteLine(index + ". " + getStringForVehicleType(type) + "\n");
+                System.Console.WriteLine(index + ". " + Vehicle.GetStringForVehicleType(type) + Environment.NewLine);
                 index++;
             }
-        }
-
-        private static string getStringForVehicleType(eVehicleType i_VehicleType)
-        {
-            string type = string.Empty;
-            if (i_VehicleType == eVehicleType.ElectricCar)
-            {
-                type = "Electric Car";
-            }
-            else if (i_VehicleType == eVehicleType.ElectricMotorcycle)
-            {
-                type = "Electric Motorcycle";
-            }
-            else
-            {
-                type = string.Empty + i_VehicleType;
-            }
-
-            return type;
         }
 
         private static string printList(IEnumerable i_List)
@@ -293,7 +305,7 @@ namespace Ex03.ConsoleUI
 
             foreach (object item in i_List)
             {
-                list += "\n" + item;
+                list += Environment.NewLine + item;
             }
 
             return list;
@@ -303,13 +315,13 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nPlease enter your name");
+            System.Console.WriteLine(Environment.NewLine + "Please enter your name");
             string ownerName = System.Console.ReadLine();
             i_NewCustomer.Name = ownerName;
-            System.Console.WriteLine("\nPlease enter your phone number");
+            System.Console.WriteLine(Environment.NewLine + "Please enter your phone number");
             string ownerPhoneNumber = System.Console.ReadLine();
             i_NewCustomer.PhoneNumber = ownerPhoneNumber;
-            System.Console.WriteLine("\nPlease enter your " + getStringForVehicleType(i_VehicleType).ToLower() + "'s license number");
+            System.Console.WriteLine(Environment.NewLine + "Please enter your " + Vehicle.GetStringForVehicleType(i_VehicleType).ToLower() + "'s license number");
             string ownerLicenseNumber = System.Console.ReadLine();
 
             if (!m_OurGarage.IsInGarage(ownerLicenseNumber))
@@ -331,15 +343,15 @@ namespace Ex03.ConsoleUI
             {
                 if (property.Contains("Number"))
                 {
-                    System.Console.WriteLine("\nPlease specify what is your " + getStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
+                    System.Console.WriteLine(Environment.NewLine + "Please specify what is your " + Vehicle.GetStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
                 }
                 else if (property.Contains("Is"))
                 {
-                    System.Console.WriteLine("\nPlease specify if your " + getStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
+                    System.Console.WriteLine(Environment.NewLine + "Please specify if your " + Vehicle.GetStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
                 }
                 else
                 {
-                    System.Console.WriteLine("\nPlease specify your " + getStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
+                    System.Console.WriteLine(Environment.NewLine + "Please specify your " + Vehicle.GetStringForVehicleType(i_VehicleType).ToLower() + "'s " + property.ToLower());
                 }
 
                 List<string> values = propertiesOfNewVehicle[property];
@@ -387,8 +399,8 @@ namespace Ex03.ConsoleUI
         {
             bool flag = false;
             string updateRes = string.Empty;
-            string errorMessage = !(i_Values.Contains(i_Input) || i_Values.Contains(i_Input.ToLower())) ? "\nPlease type a value from: \n" 
-                + printList(i_Values) + "\n" : string.Empty;
+            string errorMessage = !(i_Values.Contains(i_Input) || i_Values.Contains(i_Input.ToLower())) ? Environment.NewLine + "Please type a value from: " + Environment.NewLine + printList(i_Values) + Environment.NewLine : string.Empty;
+
             if (errorMessage == string.Empty)
             {
                 flag = true;
@@ -401,7 +413,7 @@ namespace Ex03.ConsoleUI
 
                 if (i_Property.Contains("air pressure"))
                 {
-                    errorMessage = resultValue > float.Parse(i_Values[0]) || resultValue < 0 ? "\nPlease type a value between 0 to " + i_Values[0] + "\n" : string.Empty;
+                    errorMessage = resultValue > float.Parse(i_Values[0]) || resultValue < 0 ? Environment.NewLine + "Please type a value between 0 to " + i_Values[0] + Environment.NewLine : string.Empty;
 
                     if (errorMessage == string.Empty)
                     {
@@ -430,7 +442,7 @@ namespace Ex03.ConsoleUI
 
                 if (i_Property.Contains("precent of"))
                 {
-                    errorMessage = resultValue < 0 || resultValue > 1 ? "\nPlease type a value between 0 to 1\n" : string.Empty;
+                    errorMessage = resultValue < 0 || resultValue > 1 ? Environment.NewLine + "Please type a value between 0 to 1\n" : string.Empty;
                     if (errorMessage == string.Empty)
                     {
                         flag = true;
@@ -438,7 +450,7 @@ namespace Ex03.ConsoleUI
                 }
                 else
                 {
-                    errorMessage = resultValue <= 0 ? "\nPlease type a positive number\n" : string.Empty;
+                    errorMessage = resultValue <= 0 ? Environment.NewLine + "Please type a positive number\n" : string.Empty;
                     if (errorMessage == string.Empty)
                     {
                         flag = true;
@@ -449,7 +461,7 @@ namespace Ex03.ConsoleUI
             {
                 int resultValue = checkIntProperty(i_Property, i_Input);
                 updateRes = string.Empty + resultValue;
-                errorMessage = resultValue <= 0 ? "\nPlease type a positive number\n" : string.Empty;
+                errorMessage = resultValue <= 0 ? Environment.NewLine + "Please type a positive number\n" : string.Empty;
                 if (errorMessage == string.Empty)
                 {
                     flag = true;
@@ -470,7 +482,7 @@ namespace Ex03.ConsoleUI
             while (!float.TryParse(i_Input, out result))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                System.Console.WriteLine("\nPlease type a positive number\n");
+                System.Console.WriteLine(Environment.NewLine + "Please type a positive number" + Environment.NewLine);
                 Console.ForegroundColor = ConsoleColor.White;
                 i_Input = Console.ReadLine();
             }
@@ -485,7 +497,7 @@ namespace Ex03.ConsoleUI
             while (!int.TryParse(i_Input, out result))
             {
                 Console.ForegroundColor = ConsoleColor.Yellow;
-                System.Console.WriteLine("\nPlease type a positive number");
+                System.Console.WriteLine(Environment.NewLine + "Please type a positive number");
                 Console.ForegroundColor = ConsoleColor.White;
                 i_Input = Console.ReadLine();
             }
@@ -498,15 +510,15 @@ namespace Ex03.ConsoleUI
             Console.Clear();
             printGarageWelcome();
             Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("\nThis vehicle is already in the garage, please choose your prefernce:\n");
+            System.Console.WriteLine(Environment.NewLine + "This vehicle is already in the garage, please choose your prefernce:" + Environment.NewLine);
             Console.ForegroundColor = ConsoleColor.White;
-            System.Console.WriteLine("\n1. Do another operation \n2. Go back to the main menu");
+            System.Console.WriteLine(Environment.NewLine + "1. Do another operation "+ Environment.NewLine +"2. Go back to the main menu");
             string choice = System.Console.ReadLine();
 
             while (choice != "1" && choice != "2")
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                System.Console.WriteLine("\n\nIllegal value, please type again");
+                System.Console.WriteLine(Environment.NewLine + Environment.NewLine + "Illegal value, please type again");
                 Console.ForegroundColor = ConsoleColor.White;
                 choice = System.Console.ReadLine();
             }
@@ -538,63 +550,30 @@ namespace Ex03.ConsoleUI
             Array OperationsForGasVehicle = Enum.GetValues(typeof(eGasMethods));
             Array OperationsForElectricVehicle = Enum.GetValues(typeof(eElectricMethods));
             int index = 1;
-            System.Console.WriteLine("\nPlease choose the operation you would like to do\n");
-            switch (i_VehicleType)
+            System.Console.WriteLine(Environment.NewLine + "Please choose the operation you would like to do" + Environment.NewLine);
+
+            if (Garage.isGasVehicle(i_VehicleType))
             {
-                case eVehicleType.Car:
-                case eVehicleType.Motorcycle:
-                case eVehicleType.Truck:
-                    foreach (eGasMethods method in OperationsForGasVehicle)
-                    {
-                        System.Console.WriteLine(index + ". " + getStringForGasMethod(method) + "\n");
-                        index++;
-                    }
+                foreach (eGasMethods method in OperationsForGasVehicle)
+                {
+                    System.Console.WriteLine(index + ". " + Garage.GetStringForGasMethod(method) + Environment.NewLine);
+                    index++;
+                }
 
-                    int gasChoiceNum = getUserChoice(OperationsForGasVehicle.Length);
-                    doGasOp(i_NewCustomer, gasChoiceNum);
-                    break;
-                case eVehicleType.ElectricCar:
-                case eVehicleType.ElectricMotorcycle:
-                    foreach (eElectricMethods operation in Enum.GetValues(typeof(eElectricMethods)))
-                    {
-                        System.Console.WriteLine(index + ". " + getStringForElectricOp(operation) + "\n");
-                        index++;
-                    }
-
-                    int EChoiceNum = getUserChoice(OperationsForGasVehicle.Length);
-                    doElectricOp(i_NewCustomer, EChoiceNum);
-                    break;
+                int gasChoiceNum = getUserChoice(OperationsForGasVehicle.Length);
+                doGasOp(i_NewCustomer, gasChoiceNum);
             }
-        }
-
-        private static string getStringForGasMethod(eGasMethods i_eGasOperation)
-        {
-            string operation = string.Empty;
-            if (i_eGasOperation == eGasMethods.addFuel)
+            else
             {
-                operation = "Add fuel";
-            }
-            else if (i_eGasOperation == eGasMethods.inflate)
-            {
-                operation = "Inflate air pressure";
-            }
+                foreach (eElectricMethods operation in Enum.GetValues(typeof(eElectricMethods)))
+                {
+                    System.Console.WriteLine(index + ". " + Garage.GetStringForElectricOp(operation) + Environment.NewLine);
+                    index++;
+                }
 
-            return operation;
-        }
-
-        private static string getStringForElectricOp(eElectricMethods i_eElectricVehiclesOp)
-        {
-            string operation = string.Empty;
-            if (i_eElectricVehiclesOp == eElectricMethods.chargeBattery)
-            {
-                operation = "Charge battery";
+                int EChoiceNum = getUserChoice(OperationsForGasVehicle.Length);
+                doElectricOp(i_NewCustomer, EChoiceNum);
             }
-            else if (i_eElectricVehiclesOp == eElectricMethods.inflate)
-            {
-                operation = "Inflate air pressure";
-            }
-
-            return operation;
         }
 
         private static void doGasOp(Customer newCustomer, int i_ChoicNum)
@@ -625,9 +604,9 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nPlease type the type of gas");
+            System.Console.WriteLine(Environment.NewLine + "Please type the type of gas");
             string gasType = System.Console.ReadLine();
-            System.Console.WriteLine("\nPlease type the amount of gas you would like to add (in litters)");
+            System.Console.WriteLine(Environment.NewLine + "Please type the amount of gas you would like to add (in litters)");
             string inputAmount = System.Console.ReadLine();
             
             bool flag = false;
@@ -643,15 +622,15 @@ namespace Ex03.ConsoleUI
                         m_OurGarage.AddFuel(i_Vehicle, gasType, amount);
                         Console.ForegroundColor = ConsoleColor.Green;
                         Console.Clear();
-                        System.Console.WriteLine("\nSuccessfully added\n");
+                        System.Console.WriteLine(Environment.NewLine + "Successfully added" + Environment.NewLine);
                         Console.ForegroundColor = ConsoleColor.White;
                         flag = true;
                     }
                     catch (ArgumentException)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        System.Console.WriteLine("\nType doesn't correspond to the vehicle's type, please type the value corresponding to "
-                        + getStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " from: \n" + printList(Enum.GetValues(typeof(eGasType))) + "\n");
+                        System.Console.WriteLine(Environment.NewLine + "Type doesn't correspond to the vehicle's type, please type the value corresponding to "
+                        + Vehicle.GetStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " from: " + Environment.NewLine + printList(Enum.GetValues(typeof(eGasType))) + Environment.NewLine);
                         Console.ForegroundColor = ConsoleColor.White;
                         gasType = System.Console.ReadLine();
                     }
@@ -683,7 +662,7 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nPlease type the amount of hours you would like to add to the battery");
+            System.Console.WriteLine(Environment.NewLine + "Please type the amount of hours you would like to add to the battery");
             string inputAmount = System.Console.ReadLine();
             bool flag = false;
             float amount = 0;
@@ -698,7 +677,7 @@ namespace Ex03.ConsoleUI
                         m_OurGarage.ChargeBattery(i_Vehicle, amount);
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Green;
-                        System.Console.WriteLine("\nSuccessfully added\n");
+                        System.Console.WriteLine(Environment.NewLine + "Successfully added\n");
                         Console.ForegroundColor = ConsoleColor.White;
                         flag = true;
                     }
@@ -730,7 +709,7 @@ namespace Ex03.ConsoleUI
         {
             Console.Clear();
             printGarageWelcome();
-            System.Console.WriteLine("\nPlease type the amount of air you would like to add");
+            System.Console.WriteLine(Environment.NewLine + "Please type the amount of air you would like to add");
             string inputAmount = System.Console.ReadLine();
             bool flag = false;
             float amount = 0;
@@ -745,7 +724,7 @@ namespace Ex03.ConsoleUI
                         m_OurGarage.Inflate(i_Vehicle, amount);
                         Console.Clear();
                         Console.ForegroundColor = ConsoleColor.Green;
-                        System.Console.WriteLine("\nSuccessfully added\n");
+                        System.Console.WriteLine("\nSuccessfully added" + Environment.NewLine);
                         Console.ForegroundColor = ConsoleColor.White;
                         flag = true;
                     }
@@ -776,7 +755,7 @@ namespace Ex03.ConsoleUI
         private static void finishProcess(Vehicle i_Vehicle, Customer i_Customer)
         {
             System.Console.WriteLine("If you would like to go back to the main menu press 1 or do another operation on this " + 
-                getStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " please press 2");
+                Vehicle.GetStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " please press 2");
             string choice = System.Console.ReadLine();
             bool legalChoice = false;
 
@@ -794,7 +773,7 @@ namespace Ex03.ConsoleUI
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("\n\nIllegal value, please type again");
+                    System.Console.WriteLine(Environment.NewLine + Environment.NewLine + "Illegal value, please type again");
                     Console.ForegroundColor = ConsoleColor.White;
                     choice = System.Console.ReadLine();
                 }
@@ -804,10 +783,10 @@ namespace Ex03.ConsoleUI
         private static void maximalValuesHandeling(Vehicle i_Vehicle, Customer i_Customer)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            System.Console.WriteLine("\nThe amount is already the maximal.\n");
+            System.Console.WriteLine(Environment.NewLine + "The amount is already the maximal." + Environment.NewLine);
             Console.ForegroundColor = ConsoleColor.White;
-            System.Console.WriteLine("If you would like to go back to the main menu please press 1\n" +
-                          "or if you would like to do another operation on this " + getStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " please press 2\n");
+            System.Console.WriteLine("If you would like to go back to the main menu please press 1" + Environment.NewLine +
+                          "or if you would like to do another operation on this " + Vehicle.GetStringForVehicleType(i_Vehicle.VehicleType).ToLower() + " please press 2\n");
             string choice = System.Console.ReadLine();
             bool legalChoice = false;
             while (!legalChoice)
@@ -826,7 +805,7 @@ namespace Ex03.ConsoleUI
                 else
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    System.Console.WriteLine("\n\nIllegal value, please type again");
+                    System.Console.WriteLine(Environment.NewLine + Environment.NewLine + "Illegal value, please type again");
                     Console.ForegroundColor = ConsoleColor.White;
                     choice = System.Console.ReadLine();
                 }

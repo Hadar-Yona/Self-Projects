@@ -42,15 +42,15 @@ namespace Ex03.GarageLogic
             m_NumberOfDoors = value;
         }
     }
-    
-        internal override Dictionary<string, List<string>> GetVehicleProperties()
-        {
-            throw new NotImplementedException();
-        }
 
-        internal override void SetVehicleProperties(Dictionary<string, string> i_Properties)
-        {
-            throw new NotImplementedException();
-        }
+    internal override Dictionary<string, List<string>> GetVehicleProperties()
+    {
+        throw new NotImplementedException();
     }
+
+    internal override void SetVehicleProperties(Dictionary<string, string> i_Properties)
+    {
+        throw new NotImplementedException();
+    }
+  }
 }

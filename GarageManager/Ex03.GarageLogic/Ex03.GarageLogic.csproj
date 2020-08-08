@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
+    <Compile Include="eEnergySource.cs" />
     <Compile Include="FuelCar.cs" />
     <Compile Include="eColor.cs" />
     <Compile Include="eGasMethods.cs" />

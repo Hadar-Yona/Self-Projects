@@ -37,6 +37,7 @@
     <None Include="ClassDiagram1.cd" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="eMainMenuOperations.cs" />
     <Compile Include="GarageUI.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
@@ -45,6 +46,9 @@
       <Project>{59a3e895-39b3-4890-b0de-3f3fb4376758}</Project>
       <Name>Ex03.GarageLogic</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

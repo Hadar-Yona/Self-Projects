@@ -168,9 +168,23 @@ namespace Ex03.GarageLogic
             return matchedLicenseType;
         }
 
-        public override int GetHashCode()
+        public static string GetStringForVehicleType(eVehicleType i_VehicleType)
         {
-            return LicenseNumber.GetHashCode();
+            string type = string.Empty;
+            if (i_VehicleType == eVehicleType.ElectricCar)
+            {
+                type = "Electric Car";
+            }
+            else if (i_VehicleType == eVehicleType.ElectricMotorcycle)
+            {
+                type = "Electric Motorcycle";
+            }
+            else
+            {
+                type = string.Empty + i_VehicleType;
+            }
+
+            return type;
         }
     }
 }

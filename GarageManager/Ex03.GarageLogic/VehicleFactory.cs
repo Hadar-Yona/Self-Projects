@@ -33,10 +33,10 @@ namespace Ex03.GarageLogic
             return vehicle.GetVehicleProperties();
         }
 
-        internal static Vehicle CreateVehicle(eVehicleType VehicleType, Dictionary<string, string> i_VehicleProperties)
+        internal static Vehicle CreateVehicle(eVehicleType i_VehicleType, Dictionary<string, string> i_VehicleProperties)
         {
             Vehicle vehicle = null;
-            switch (VehicleType)
+            switch (i_VehicleType)
             {
                 case eVehicleType.Car:
                     vehicle = new FuelCar();

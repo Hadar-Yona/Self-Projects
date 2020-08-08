@@ -9,12 +9,10 @@ namespace Ex03.GarageLogic
     public class Garage
     {
         private Dictionary<Customer, eStatus> m_garageCustomers;
-        private List<string> m_garageOperations;
 
         public Garage()
         {
             m_garageCustomers = new Dictionary<Customer, eStatus>();
-            m_garageOperations = new List<string>();
         }
 
         public Dictionary<Customer, eStatus> GarageCustomers
@@ -23,23 +21,6 @@ namespace Ex03.GarageLogic
             {
                 return m_garageCustomers;
             }
-        }
-
-        public List<string> GarageOperations
-        {
-            get
-            {
-                return m_garageOperations;
-            }
-        }
-
-        public void AddOperations()
-        {
-            m_garageOperations.Add("Insert a new vehicle into the garage");
-            m_garageOperations.Add("Display list of the license numbers currently in the garage");
-            m_garageOperations.Add("Display vehicle's details");
-            m_garageOperations.Add("Do another operation on existing vehicle");
-            m_garageOperations.Add("Change vehicle status");
         }
 
         public void AddCustomer(Customer i_NewCustomer)
@@ -246,6 +227,50 @@ namespace Ex03.GarageLogic
             {
                    throw new ValueOutOfRangeException(0, i_Vehicle.WheelsMaxAirPressure - i_Vehicle.WheelsSet[0].CurrAirPressure);
             }         
+        }
+
+        public static bool isGasVehicle(eVehicleType i_VehicleType)
+        {
+            bool flag = true;
+            switch (i_VehicleType)
+            {
+                case eVehicleType.ElectricCar:
+                case eVehicleType.ElectricMotorcycle:
+                    flag = false;
+                    break;
+            }
+
+            return flag;
+        }
+
+        public static string GetStringForGasMethod(eGasMethods i_eGasOperation)
+        {
+            string operation = string.Empty;
+            if (i_eGasOperation == eGasMethods.addFuel)
+            {
+                operation = "Add fuel";
+            }
+            else if (i_eGasOperation == eGasMethods.inflate)
+            {
+                operation = "Inflate air pressure";
+            }
+
+            return operation;
+        }
+
+        public static string GetStringForElectricOp(eElectricMethods i_eElectricVehiclesOp)
+        {
+            string operation = string.Empty;
+            if (i_eElectricVehiclesOp == eElectricMethods.chargeBattery)
+            {
+                operation = "Charge battery";
+            }
+            else if (i_eElectricVehiclesOp == eElectricMethods.inflate)
+            {
+                operation = "Inflate air pressure";
+            }
+
+            return operation;
         }
     }
 }
