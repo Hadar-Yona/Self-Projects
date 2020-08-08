@@ -1,1 +1,1 @@
-Here are examples of self made programing projects
+Here are examples of self made programming projects
