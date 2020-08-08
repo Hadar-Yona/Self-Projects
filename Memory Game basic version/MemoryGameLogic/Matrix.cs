@@ -26,7 +26,7 @@ namespace gameLogic
 
             for (int i = 0; i < i_NumOfRows; i++)
             {
-              for(int j = 0; j < i_NumOfColumns; j++)
+              for (int j = 0; j < i_NumOfColumns; j++)
                 {
                     m_Board[i, j] = new Cell(new Tuple<int, int>(i, j));                    
                 }
@@ -38,7 +38,7 @@ namespace gameLogic
         private void DoWhenCardHasOpened(Cell i_CellWhichOpened)
         {
             m_NumOfOpenCells++;
-            if(m_NumOfOpenCells == this.NumOfCells)
+            if (m_NumOfOpenCells == this.NumOfCells)
             {
                 m_BoardIsAllOpenDelegate.Invoke(this);
             }
@@ -114,7 +114,7 @@ namespace gameLogic
             return cellsAsList;
         }
 
-        //choose card for the computer moves
+
         internal Cell RandomCell()
         {
             List<Cell> closedCards = this.toList().FindAll(cell => !cell.HoldsCard.Open);

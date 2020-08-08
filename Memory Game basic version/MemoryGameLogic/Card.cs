@@ -63,6 +63,10 @@ namespace gameLogic
                 i_Player.UpdateScore(i_Player);
                 flag = true;
             }
+            else
+            {
+               
+            }
 
             return flag;
         }

@@ -8,8 +8,8 @@ namespace gameLogic
 {
     public class Cell
     {
-        private int m_Row;
-        private int m_Column;
+        private readonly int m_Row;
+        private readonly int m_Column;
         private Card m_HoldsCard;
 
         public Cell(Tuple<int, int> i_CellLocation)
@@ -30,7 +30,7 @@ namespace gameLogic
             }
         }
 
-        public Tuple<int, int> getCellIndexes()
+        public Tuple<int, int> GetCellIndexes()
         {
             int cellRow = this.m_Row;
             int cellColumn = this.m_Column;

@@ -75,7 +75,7 @@ namespace Project1
             MemoryGameForm game = new MemoryGameForm(m_RowSize, m_ColSize, firstPlayerName, secondPlayerName);
             game.ShowDialog();
 
-            if(game.DialogResult == DialogResult.OK)
+            if (game.DialogResult == DialogResult.OK)
             {
                 this.DialogResult = DialogResult.OK;
             }

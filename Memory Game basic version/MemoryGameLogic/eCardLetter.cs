@@ -8,7 +8,7 @@ namespace gameLogic
 {
     public enum eCardLetter
     {
-        A ,
+        A,
         B,
         C,
         D,

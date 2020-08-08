@@ -9,7 +9,7 @@ namespace gameLogic
     {
         private string m_Name;
         private int m_Score;
-        private bool m_IsComputer;      //if the game is against the computer it should be: Player.isComputer = true;
+        private bool m_IsComputer;      
         private bool m_Turn;
         private Tuple<int, Char, Card>[] m_ComputerAI;
         private int m_NextOpenIndexInComAIArray;
@@ -22,7 +22,7 @@ namespace gameLogic
             this.m_Score = 0;
             this.m_IsComputer = isComputer;
             this.m_Turn = turn;
-            this.m_ComputerAI = new Tuple<int, char, Card>[24]; // added beyond hadars code (AI)
+            this.m_ComputerAI = new Tuple<int, char, Card>[24]; 
             this.m_NextOpenIndexInComAIArray = 0;
         }
 
@@ -123,13 +123,19 @@ namespace gameLogic
             Cell firstCard = i_Board.RandomCell();
             Cell secondCard = i_Board.RandomCell();
 
-            while(firstCard == secondCard)
+            while (firstCard == secondCard)
             {
                 secondCard = i_Board.RandomCell();
             }
 
             Tuple<Card, Card> computersCards = new Tuple<Card, Card>(firstCard.HoldsCard, secondCard.HoldsCard);
             return computersCards;
+        }
+
+        public static void SwitchTurns(Player i_FirstPlayer, Player i_SecondPlayer)
+        {
+            i_FirstPlayer.Turn = !i_FirstPlayer.Turn;
+            i_SecondPlayer.Turn = !i_SecondPlayer.Turn;
         }
     }
 }

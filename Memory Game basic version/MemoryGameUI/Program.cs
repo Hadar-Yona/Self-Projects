@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace Project1
 {
-    class Program
+    public class Program
     {
         public static void Main()
         {

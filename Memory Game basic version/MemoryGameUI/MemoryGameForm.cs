@@ -16,6 +16,7 @@ namespace Project1
 {
     public partial class MemoryGameForm : Form
     {
+        private const string TIE = "Tie";
         private Matrix m_GameBoard;
         private Button cardInCell;
         private int m_Rows;
@@ -31,6 +32,7 @@ namespace Project1
             {
                 return m_GameBoard;
             }
+
             set
             {
                 m_GameBoard = value;
@@ -43,6 +45,7 @@ namespace Project1
             {
                 return cardInCell;
             }
+
             set
             {
                 cardInCell = value;
@@ -55,6 +58,7 @@ namespace Project1
             {
                 return m_Rows;
             }
+
             set
             {
                 m_Rows = value;
@@ -67,6 +71,7 @@ namespace Project1
             {
                 return m_Columns;
             }
+
             set
             {
                 m_Columns = value;
@@ -79,6 +84,7 @@ namespace Project1
             {
                 return m_FirstPlayer;
             }
+
             set
             {
                 m_FirstPlayer = value;
@@ -91,6 +97,7 @@ namespace Project1
             {
                 return m_SecondPlayer;
             }
+
             set
             {
                 m_SecondPlayer = value;
@@ -103,6 +110,7 @@ namespace Project1
             {
                 return m_PlayersChoice;
             }
+
             set
             {
                 m_PlayersChoice = value;
@@ -115,6 +123,7 @@ namespace Project1
             {
                 return m_OpenCards;
             }
+
             set
             {
                 m_OpenCards = value;
@@ -124,20 +133,20 @@ namespace Project1
         public MemoryGameForm(int i_Rows, int i_Columns, string i_FirstName, string i_SecondName)
         {
             InitializeComponent();
-            newPlayers(i_FirstName, i_SecondName);
+            NewPlayers(i_FirstName, i_SecondName);
             PlayersChoice = new List<Button>();
             OpenCards = new List<Button>();
             Rows = i_Rows;
             Columns = i_Columns;
-            newBoard();
+            NewBoard();
         }
 
-        internal void newBoard()
+        internal void NewBoard()
         {
             this.Size = new Size(Columns * 80 + (Columns + 1) * 10 + 15, Rows * 80 + (Rows + 1) * 10 + 140);
             this.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             GameBoard = new Matrix(Rows, Columns);
-            GameBoard.m_BoardIsAllOpenDelegate += DoWhenAllCardsAreOpen;
+            GameBoard.m_BoardIsAllOpenDelegate += doWhenAllCardsAreOpen;
             for (int i = 0; i < Rows; i++)
             {
                 for (int j = 0; j < Columns; j++)
@@ -149,37 +158,37 @@ namespace Project1
                     CardInCell.Tag = GameBoard.Board[i, j];                  
                     CardInCell.TabStop = false;
                     CardInCell.TabIndex = 0;
-                    CardInCell.Click += CardClicked;
+                    CardInCell.Click += cardClicked;
                     CardInCell.FlatStyle = FlatStyle.Flat;
                     Controls.Add(CardInCell);
                 }
             }
         }
 
-        private void DoWhenAllCardsAreOpen(Matrix obj)
+        private void doWhenAllCardsAreOpen(Matrix obj)
         {
             endOfGame();
         }
 
-        internal void newPlayers(string i_FirstName, string i_SecondName)
+        internal void NewPlayers(string i_FirstName, string i_SecondName)
         {
             FirstPlayer = new Player(i_FirstName, false, true);
             SecondPlayer = new Player(i_SecondName, i_SecondName == "- computer -" ? true : false, false);
             FirstPlayer.m_ScoreDelegate += setScorLables;
-            FirstPlayer.m_TurnDelegate += setCurrentTurnLable;
+            FirstPlayer.m_TurnDelegate += SetCurrentTurnLable;
             SecondPlayer.m_ScoreDelegate += setScorLables;
-            SecondPlayer.m_TurnDelegate += setCurrentTurnLable;
-            setCurrentTurnLable(FirstPlayer);
-            InitScorLables();
+            SecondPlayer.m_TurnDelegate += SetCurrentTurnLable;
+            SetCurrentTurnLable(FirstPlayer);
+            initScorLables();
         }        
 
-        private void InitScorLables()
+        private void initScorLables()
         {
             setScorLables(FirstPlayer);
             setScorLables(SecondPlayer);
         }
 
-        internal void setCurrentTurnLable(Player i_PlayersTurn)
+        internal void SetCurrentTurnLable(Player i_PlayersTurn)
         {
             currentPlayerLabel.Text = "Current Player: " + i_PlayersTurn.Name;
             currentPlayerLabel.BackColor = FirstPlayer.Turn ? firstPlayerLabel.BackColor : secondPlayerLabel.BackColor;
@@ -191,7 +200,7 @@ namespace Project1
         internal void setScorLables(Player i_PlayerToUpdate)
         {
             string updatedScore = i_PlayerToUpdate.Name + ": " + i_PlayerToUpdate.Score + " Pairs";
-            if(i_PlayerToUpdate == FirstPlayer)
+            if (i_PlayerToUpdate == FirstPlayer)
             {
                 firstPlayerLabel.Text = updatedScore;
                 firstPlayerLabel.AutoSize = true;
@@ -207,23 +216,23 @@ namespace Project1
             }
         }
 
-        private void CardClicked(object sender, EventArgs e)
+        private void cardClicked(object sender, EventArgs e)
         {
-            CheckClickedCard(sender);           
+            checkClickedCard(sender);           
         }
 
-        private void CheckClickedCard(object sender)
+        private void checkClickedCard(object sender)
         {
-            Button card = (sender as Button);
+            Button card = sender as Button;
             card.Enabled = false;
-            card.Text = (card.Tag as Cell).HoldsCard.Letter + "";
+            card.Text = (card.Tag as Cell).HoldsCard.Letter + string.Empty;
             card.Font = new Font("Ariel", 14);
             card.BackColor = FirstPlayer.Turn ? firstPlayerLabel.BackColor : secondPlayerLabel.BackColor;
             card.Refresh();
-            UpdateGameFlow(card);
+            updateGameFlow(card);
         }
 
-        private void UpdateGameFlow(Button i_PictureBox)
+        private void updateGameFlow(Button i_PictureBox)
         {
             PlayersChoice.Add(i_PictureBox);
             if (PlayersChoice.Count == 2)
@@ -247,14 +256,13 @@ namespace Project1
         {
             if (!Card.CompareCards((i_FirstCard.Tag as Cell).HoldsCard, (i_SecondCard.Tag as Cell).HoldsCard, FirstPlayer.Turn ? FirstPlayer : SecondPlayer))
             {
-                i_FirstCard.Text = "";
+                i_FirstCard.Text = string.Empty;
                 i_FirstCard.BackColor = Color.FromArgb(255, 240, 240, 240);
-                i_SecondCard.Text = "";
+                i_SecondCard.Text = string.Empty;
                 i_SecondCard.BackColor = Color.FromArgb(255, 240, 240, 240);
                 i_FirstCard.Refresh();
                 i_SecondCard.Refresh();
-                FirstPlayer.Turn = !FirstPlayer.Turn;
-                SecondPlayer.Turn = !SecondPlayer.Turn;
+                Player.SwitchTurns(FirstPlayer, SecondPlayer);
             }
             else
             {
@@ -265,7 +273,11 @@ namespace Project1
             }
 
             PlayersChoice.Clear();
+            DisableButtons();
+        }
 
+        private void DisableButtons()
+        {
             if (SecondPlayer.Turn && SecondPlayer.IsComputer)
             {
                 foreach (Control button in Controls)
@@ -296,14 +308,14 @@ namespace Project1
         private void computersTurn()
         {
             Tuple<Card, Card> computerCards = SecondPlayer.ComputersMove(GameBoard);
-            Tuple<int, int> firstIndexes = computerCards.Item1.CardLocation.getCellIndexes();
-            Tuple<int, int> secondIndexes = computerCards.Item2.CardLocation.getCellIndexes();
+            Tuple<int, int> firstIndexes = computerCards.Item1.CardLocation.GetCellIndexes();
+            Tuple<int, int> secondIndexes = computerCards.Item2.CardLocation.GetCellIndexes();
             Button firstButton = (Button)this.Controls.Find("Cell_" + firstIndexes.Item1 + firstIndexes.Item2, false).First();
             Button secondButton = (Button)this.Controls.Find("Cell_" + secondIndexes.Item1 + secondIndexes.Item2, false).First();
-            firstButton.Text = (firstButton.Tag as Cell).HoldsCard.Letter + "";
+            firstButton.Text = (firstButton.Tag as Cell).HoldsCard.Letter + string.Empty;
             firstButton.BackColor = FirstPlayer.Turn ? firstPlayerLabel.BackColor : secondPlayerLabel.BackColor;
             firstButton.Font = new Font("Ariel", 14);
-            secondButton.Text = (secondButton.Tag as Cell).HoldsCard.Letter + "";
+            secondButton.Text = (secondButton.Tag as Cell).HoldsCard.Letter + string.Empty;
             secondButton.BackColor = firstButton.BackColor;
             secondButton.Font = new Font("Ariel", 14);
             firstButton.Refresh();
@@ -324,10 +336,10 @@ namespace Project1
             }
             else if (FirstPlayer.Score == SecondPlayer.Score)
             {
-                winner = "Tie";
+                winner = TIE;
             }
 
-            if (winner == "Tie")
+            if (winner == TIE)
             {
                 messageBoxResult = MessageBox.Show("There is a Tie!" + Environment.NewLine + "Would you like to play another game?", "Game Over", MessageBoxButtons.YesNo);
             }
@@ -352,3 +364,4 @@ namespace Project1
         }
     }
 }
+  
