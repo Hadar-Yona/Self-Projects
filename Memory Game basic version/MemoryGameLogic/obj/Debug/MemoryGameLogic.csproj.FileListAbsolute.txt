@@ -1,6 +1,0 @@
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\bin\Debug\MemoryGameLogic.dll
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\bin\Debug\MemoryGameLogic.pdb
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\obj\Debug\MemoryGameLogic.csprojAssemblyReference.cache
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\obj\Debug\MemoryGameLogic.csproj.CoreCompileInputs.cache
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\obj\Debug\MemoryGameLogic.dll
-C:\Users\hadar\Desktop\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\B20 Ex05 HadarYona 313363111 TalKedmi 205881022\MemoryGameLogic\obj\Debug\MemoryGameLogic.pdb
